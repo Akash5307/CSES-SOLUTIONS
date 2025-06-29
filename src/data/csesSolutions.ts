@@ -137,6 +137,60 @@ int main() {
         `,
         notes: 'A greedy approach using two pointers after sorting both applicant desired sizes and apartment sizes.'
       },
+      {
+        id: 'josephus-problem-II',
+        title: 'Josephus Problem II',
+        csesLink: 'https://cses.fi/problemset/task/2163',
+        difficulty: 'Medium',
+        cppCode: `
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long int
+const int Mod = 1e9 + 7;
+using vi = vector<int>;
+using vvi = vector<vi>;
+using vvvi = vector<vvi>;
+//-----------------------------||||||||||||||||||||......................------
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template<typename T>
+using ordered_set=tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+//find_by_order() and order_of_key(). 
+//The first returns an iterator to the k-th largest element (counting from zero), 
+//the second — the number of items in a set that are strictly smaller than our item.
+
+
+void solve(){
+    ll n,k;
+    cin>>n>>k;
+    ordered_set<int>T;
+    for(int i=1;i<=n;i++){
+        T.insert(i);
+    }
+    int indx=k;
+	while(T.size()>0){
+		indx%=T.size();
+		int x=*T.find_by_order(indx);
+		T.erase(x);
+		cout<<x<<" ";
+		indx+=k;
+    }
+   
+}
+int main() {
+    int T=1;
+    // cin >> T;
+    
+    while (T--) {
+        solve();
+    }
+    
+    return 0;
+}
+        `,
+        notes: ''
+      }
     ],
   },
   {
