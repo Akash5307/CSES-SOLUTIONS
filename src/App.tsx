@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import type { Solution } from './types';
 import { csesProblemSet } from './data/csesSolutions';
@@ -7,54 +6,97 @@ import Sidebar from './components/Sidebar';
 import SolutionDisplay from './components/SolutionDisplay';
 import Footer from './components/Footer';
 
+const totalProblems = csesProblemSet.reduce((s, c) => s + c.problems.length, 0);
+
+const WelcomeScreen: React.FC = () => (
+  <div className="flex flex-col items-center justify-center min-h-full py-20 px-6 text-center">
+    <div className="fade-in max-w-md">
+      <div className="w-16 h-16 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <svg className="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.8} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+        </svg>
+      </div>
+
+      <h2 className="text-3xl font-bold text-zinc-100 mb-3">CSES Solutions</h2>
+      <p className="text-zinc-400 mb-10 leading-relaxed">
+        Browse clean C++ solutions with explanations for every problem.
+      </p>
+
+      <div className="flex justify-center gap-3 mb-10 flex-wrap">
+        {[
+          { v: totalProblems, l: 'Problems' },
+          { v: csesProblemSet.length, l: 'Categories' },
+          { v: 'C++17', l: 'Language' },
+        ].map(({ v, l }) => (
+          <div key={l} className="bg-zinc-800/80 border border-zinc-700/60 rounded-xl px-6 py-3">
+            <div className="text-xl font-bold text-zinc-100">{v}</div>
+            <div className="text-xs text-zinc-500 mt-0.5">{l}</div>
+          </div>
+        ))}
+      </div>
+
+      <p className="text-sm text-zinc-600 flex items-center justify-center gap-2">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+        </svg>
+        Pick a problem from the sidebar
+      </p>
+    </div>
+  </div>
+);
+
 const App: React.FC = () => {
   const [selectedSolution, setSelectedSolution] = useState<Solution | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  const handleSelectSolution = useCallback((solution: Solution) => {
-    setSelectedSolution(solution);
-    if (window.innerWidth < 768) { // md breakpoint in Tailwind
-      setIsSidebarOpen(false);<App />
-    }
+  const handleSelect = useCallback((s: Solution) => {
+    setSelectedSolution(s);
+    if (window.innerWidth < 768) setSidebarOpen(false);
   }, []);
 
-  const toggleSidebar = useCallback(() => {
-    setIsSidebarOpen(prev => !prev);
-  }, []);
-  
+  const categoryName = selectedSolution
+    ? csesProblemSet.find(c => c.problems.some(p => p.id === selectedSolution.id))?.name
+    : undefined;
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-900 text-gray-200">
-      <Header onToggleSidebar={toggleSidebar} />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar 
-          problemSet={csesProblemSet} 
-          onSelectSolution={handleSelectSolution}
-          selectedSolutionId={selectedSolution?.id}
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
+    // Full-height flex column – header + content row
+    <div className="flex flex-col h-screen bg-zinc-950 text-zinc-100 overflow-hidden">
+
+      <Header onToggleSidebar={() => setSidebarOpen(p => !p)} sidebarOpen={sidebarOpen} />
+
+      {/* Content row */}
+      <div className="flex flex-1 min-h-0 relative">
+
+        {/* Mobile backdrop */}
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-20 bg-black/60 md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        <Sidebar
+          problemSet={csesProblemSet}
+          onSelectSolution={handleSelect}
+          selectedId={selectedSolution?.id}
+          open={sidebarOpen}
         />
-        <main className={`flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto transition-all duration-300 ease-in-out ${isSidebarOpen && 'md:ml-72'}`}>
+
+        <main className="flex-1 overflow-y-auto min-w-0">
           {selectedSolution ? (
-            <SolutionDisplay solution={selectedSolution} />
+            <SolutionDisplay
+              key={selectedSolution.id}
+              solution={selectedSolution}
+              categoryName={categoryName}
+            />
           ) : (
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="text-center p-8 bg-gray-800 rounded-lg shadow-xl">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-16 h-16 mx-auto mb-4 text-blue-400">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-                </svg>
-                <h2 className="text-2xl font-semibold mb-2 text-gray-100">Welcome to CSES Solutions Viewer</h2>
-                <p className="text-gray-400">Select a problem from the sidebar to view its C++ solution.</p>
-                <p className="text-sm mt-4 text-gray-500">Explore categories and challenges to enhance your competitive programming skills.</p>
-              </div>
-            </div>
+            <WelcomeScreen />
           )}
+          <Footer />
         </main>
       </div>
-      <Footer />
     </div>
   );
 };
 
 export default App;
-    

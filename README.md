@@ -1,54 +1,75 @@
-# React + TypeScript + Vite
+# CSES Solutions Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React web app for browsing C++ solutions to the [CSES Problem Set](https://cses.fi/problemset/).
 
-Currently, two official plugins are available:
+## Adding a New Solution
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Step 1 — Write the `.cpp` file
 
-## Expanding the ESLint configuration
+Place the solution in the matching category folder under `src/solutions/`:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```
+src/solutions/
+  introductory-problems/
+  sorting-and-searching/
+  dynamic-programming/
+  (add more folders for new categories)
+```
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
+Name the file using the problem slug, e.g. `number-spiral.cpp`.
+
+### Step 2 — Register it in `src/data/csesSolutions.ts`
+
+**a) Import the file at the top (Vite loads it as a string via `?raw`):**
+
+```ts
+import numberSpiral from '../solutions/introductory-problems/number-spiral.cpp?raw';
+```
+
+**b) Add an entry to the appropriate category's `problems` array:**
+
+```ts
+{
+  id: 'number-spiral',
+  title: 'Number Spiral',
+  csesLink: 'https://cses.fi/problemset/task/1071',
+  difficulty: 'Easy',   // 'Easy' | 'Medium' | 'Hard' | 'Varies'
+  cppCode: numberSpiral,
+  notes: 'Optional: brief explanation of the approach.',
+},
+```
+
+That's it — the sidebar and solution view update automatically.
+
+---
+
+### Adding a New Category
+
+Add a new object to the `csesProblemSet` array in `csesSolutions.ts`:
+
+```ts
+{
+  name: 'Graph Algorithms',
+  problems: [
+    // entries go here
   ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+},
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Also create the matching folder `src/solutions/graph-algorithms/` for the `.cpp` files.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Development
+
+```bash
+npm install
+npm run dev
 ```
+
+## Tech Stack
+
+- React 19 + TypeScript
+- Vite
+- Tailwind CSS v4
+- highlight.js (C++ syntax highlighting)

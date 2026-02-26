@@ -1,5 +1,33 @@
-
 import type { ProblemSet } from '../types';
+
+// ─── Introductory Problems ────────────────────────────────────────────────────
+import weirdAlgorithm    from '../solutions/introductory-problems/weird-algorithm.cpp?raw';
+import missingNumber     from '../solutions/introductory-problems/missing-number.cpp?raw';
+import numberSpiral      from '../solutions/introductory-problems/number-spiral.cpp?raw';
+import increasingArray   from '../solutions/introductory-problems/increasing-array.cpp?raw';
+import permutations      from '../solutions/introductory-problems/permutations.cpp?raw';
+import towerOfHanoi      from '../solutions/introductory-problems/tower-of-hanoi.cpp?raw';
+import palindromeReorder from '../solutions/introductory-problems/palindrome-reorder.cpp?raw';
+
+// ─── Sorting and Searching ────────────────────────────────────────────────────
+import distinctNumbers      from '../solutions/sorting-and-searching/distinct-numbers.cpp?raw';
+import apartments           from '../solutions/sorting-and-searching/apartments.cpp?raw';
+import ferrisWheel          from '../solutions/sorting-and-searching/ferris-wheel.cpp?raw';
+import restaurantCustomers  from '../solutions/sorting-and-searching/restaurant-customers.cpp?raw';
+import maximumSubarraySum   from '../solutions/sorting-and-searching/maximum-subarray-sum.cpp?raw';
+import stickLengths         from '../solutions/sorting-and-searching/stick-lengths.cpp?raw';
+import sumOfTwoValues       from '../solutions/sorting-and-searching/sum-of-two-values.cpp?raw';
+import movieFestival        from '../solutions/sorting-and-searching/movie-festival.cpp?raw';
+import josephusProblemII    from '../solutions/sorting-and-searching/josephus-problem-ii.cpp?raw';
+
+// ─── Dynamic Programming ─────────────────────────────────────────────────────
+import diceCombinations           from '../solutions/dynamic-programming/dice-combinations.cpp?raw';
+import minimizingCoins            from '../solutions/dynamic-programming/minimizing-coins.cpp?raw';
+import coinCombinationsI          from '../solutions/dynamic-programming/coin-combinations-i.cpp?raw';
+import coinCombinationsII         from '../solutions/dynamic-programming/coin-combinations-ii.cpp?raw';
+import removingDigits             from '../solutions/dynamic-programming/removing-digits.cpp?raw';
+import gridPaths                  from '../solutions/dynamic-programming/grid-paths.cpp?raw';
+import longestIncreasingSubseq    from '../solutions/dynamic-programming/longest-increasing-subsequence.cpp?raw';
 
 export const csesProblemSet: ProblemSet = [
   {
@@ -10,52 +38,56 @@ export const csesProblemSet: ProblemSet = [
         title: 'Weird Algorithm',
         csesLink: 'https://cses.fi/problemset/task/1068',
         difficulty: 'Easy',
-        cppCode: `
-#include <iostream>
-
-int main() {
-    long long n;
-    std::cin >> n;
-    while (true) {
-        std::cout << n << " ";
-        if (n == 1) break;
-        if (n % 2 == 0) {
-            n /= 2;
-        } else {
-            n = n * 3 + 1;
-        }
-    }
-    std::cout << std::endl;
-    return 0;
-}
-        `,
-        notes: 'A straightforward simulation problem. Be careful with potential overflow if n is large, use long long.'
+        cppCode: weirdAlgorithm,
+        notes: 'A straightforward simulation. Use long long to avoid overflow when n is large.',
       },
       {
         id: 'missing-number',
         title: 'Missing Number',
         csesLink: 'https://cses.fi/problemset/task/1083',
         difficulty: 'Easy',
-        cppCode: `
-#include <iostream>
-#include <vector>
-#include <numeric>
-
-int main() {
-    long long n;
-    std::cin >> n;
-    long long sum_n = n * (n + 1) / 2;
-    long long current_sum = 0;
-    for (int i = 0; i < n - 1; ++i) {
-        long long x;
-        std::cin >> x;
-        current_sum += x;
-    }
-    std::cout << sum_n - current_sum << std::endl;
-    return 0;
-}
-        `,
-        notes: 'The sum of numbers from 1 to n is n*(n+1)/2. Subtract the sum of given numbers from this total to find the missing one.'
+        cppCode: missingNumber,
+        notes: 'The sum of 1..n is n*(n+1)/2. Subtract the sum of the given numbers to find the missing one.',
+      },
+      {
+        id: 'number-spiral',
+        title: 'Number Spiral',
+        csesLink: 'https://cses.fi/problemset/task/1071',
+        difficulty: 'Easy',
+        cppCode: numberSpiral,
+        notes: 'Observe that the spiral is built in "layers" where layer d = max(row, col). The value at (d,d) is always d². Odd and even layers fill in opposite directions — derive a closed-form formula from this pattern.',
+      },
+      {
+        id: 'increasing-array',
+        title: 'Increasing Array',
+        csesLink: 'https://cses.fi/problemset/task/1094',
+        difficulty: 'Easy',
+        cppCode: increasingArray,
+        notes: 'Scan left to right. Whenever a[i] < a[i-1], raise a[i] to a[i-1] and add the difference to the move count. Decreasing elements is never beneficial.',
+      },
+      {
+        id: 'permutations',
+        title: 'Permutations',
+        csesLink: 'https://cses.fi/problemset/task/1070',
+        difficulty: 'Easy',
+        cppCode: permutations,
+        notes: 'Place all even numbers first, then all odd numbers. Adjacent elements in each half differ by 2, and the join gap is ≥ 3. n=2 and n=3 are impossible.',
+      },
+      {
+        id: 'tower-of-hanoi',
+        title: 'Tower of Hanoi',
+        csesLink: 'https://cses.fi/problemset/task/2165',
+        difficulty: 'Easy',
+        cppCode: towerOfHanoi,
+        notes: 'Classic recursion: to move n disks from A to C, move n-1 disks to B, move the largest to C, then move n-1 disks from B to C. Total moves = 2ⁿ - 1.',
+      },
+      {
+        id: 'palindrome-reorder',
+        title: 'Palindrome Reorder',
+        csesLink: 'https://cses.fi/problemset/task/1755',
+        difficulty: 'Easy',
+        cppCode: palindromeReorder,
+        notes: 'A palindrome can be formed if and only if at most one character has an odd frequency. Place floor(freq/2) of each letter on the left half, the single odd-count letter in the middle, then mirror.',
       },
     ],
   },
@@ -67,130 +99,73 @@ int main() {
         title: 'Distinct Numbers',
         csesLink: 'https://cses.fi/problemset/task/1621',
         difficulty: 'Easy',
-        cppCode: `
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <set>
-
-int main() {
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(NULL);
-    int n;
-    std::cin >> n;
-    std::set<int> distinct_elements;
-    for (int i = 0; i < n; ++i) {
-        int x;
-        std::cin >> x;
-        distinct_elements.insert(x);
-    }
-    std::cout << distinct_elements.size() << std::endl;
-    return 0;
-}
-        `,
-        notes: 'Using a set is the most straightforward way to count distinct elements. Sorting and then iterating also works.'
+        cppCode: distinctNumbers,
+        notes: 'Insert all numbers into a std::set — its size equals the count of distinct elements.',
       },
       {
         id: 'apartments',
         title: 'Apartments',
         csesLink: 'https://cses.fi/problemset/task/1084',
         difficulty: 'Medium',
-        cppCode: `
-#include <iostream>
-#include <vector>
-#include <algorithm>
-
-int main() {
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(NULL);
-    int n, m, k;
-    std::cin >> n >> m >> k;
-    std::vector<int> desired_sizes(n);
-    std::vector<int> apartment_sizes(m);
-
-    for (int i = 0; i < n; ++i) std::cin >> desired_sizes[i];
-    for (int i = 0; i < m; ++i) std::cin >> apartment_sizes[i];
-
-    std::sort(desired_sizes.begin(), desired_sizes.end());
-    std::sort(apartment_sizes.begin(), apartment_sizes.end());
-
-    int count = 0;
-    int i = 0, j = 0;
-    while (i < n && j < m) {
-        if (std::abs(desired_sizes[i] - apartment_sizes[j]) <= k) {
-            count++;
-            i++;
-            j++;
-        } else if (desired_sizes[i] < apartment_sizes[j] - k) {
-            // Applicant's desired size is too small for current apartment
-            // even with tolerance. Move to next applicant.
-            i++;
-        } else {
-            // Apartment size is too small for current applicant's desired size
-            // even with tolerance. Move to next apartment.
-            j++;
-        }
-    }
-    std::cout << count << std::endl;
-    return 0;
-}
-        `,
-        notes: 'A greedy approach using two pointers after sorting both applicant desired sizes and apartment sizes.'
+        cppCode: apartments,
+        notes: 'Sort both arrays, then use two pointers to greedily match applicants to apartments within tolerance k.',
+      },
+      {
+        id: 'ferris-wheel',
+        title: 'Ferris Wheel',
+        csesLink: 'https://cses.fi/problemset/task/1090',
+        difficulty: 'Easy',
+        cppCode: ferrisWheel,
+        notes: 'Sort by weight. Use two pointers: try to pair the lightest child with the heaviest. If they fit (sum ≤ x), both board together; otherwise the heavy child goes alone.',
+      },
+      {
+        id: 'restaurant-customers',
+        title: 'Restaurant Customers',
+        csesLink: 'https://cses.fi/problemset/task/1619',
+        difficulty: 'Easy',
+        cppCode: restaurantCustomers,
+        notes: 'Sweep line with events: +1 for each arrival, -1 for each departure. Sort by time (arrivals before departures at the same time). Track running count and record the maximum.',
+      },
+      {
+        id: 'maximum-subarray-sum',
+        title: 'Maximum Subarray Sum',
+        csesLink: 'https://cses.fi/problemset/task/1643',
+        difficulty: 'Easy',
+        cppCode: maximumSubarraySum,
+        notes: "Kadane's algorithm: maintain the best sum ending at the current position. Either extend the previous subarray or start fresh. Works correctly when all elements are negative.",
+      },
+      {
+        id: 'stick-lengths',
+        title: 'Stick Lengths',
+        csesLink: 'https://cses.fi/problemset/task/1074',
+        difficulty: 'Easy',
+        cppCode: stickLengths,
+        notes: 'The target length minimising the total absolute difference is the median of the array. Sorting and picking p[n/2] gives the optimal answer.',
+      },
+      {
+        id: 'sum-of-two-values',
+        title: 'Sum of Two Values',
+        csesLink: 'https://cses.fi/problemset/task/1640',
+        difficulty: 'Easy',
+        cppCode: sumOfTwoValues,
+        notes: 'Hash-map lookup: for each element a[i], check whether (target - a[i]) was seen earlier. Store value → index as you scan left to right to avoid reusing the same element.',
+      },
+      {
+        id: 'movie-festival',
+        title: 'Movie Festival',
+        csesLink: 'https://cses.fi/problemset/task/1629',
+        difficulty: 'Medium',
+        cppCode: movieFestival,
+        notes: 'Classic interval scheduling / activity selection. Sort movies by end time. Greedily pick each movie that starts no earlier than the last chosen end time.',
       },
       {
         id: 'josephus-problem-II',
         title: 'Josephus Problem II',
         csesLink: 'https://cses.fi/problemset/task/2163',
-        difficulty: 'Medium',
-        cppCode: `
-#include <bits/stdc++.h>
-using namespace std;
-#define ll long long int
-const int Mod = 1e9 + 7;
-using vi = vector<int>;
-using vvi = vector<vi>;
-using vvvi = vector<vvi>;
-//-----------------------------||||||||||||||||||||......................------
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-template<typename T>
-using ordered_set=tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
-//find_by_order() and order_of_key(). 
-//The first returns an iterator to the k-th largest element (counting from zero), 
-//the second — the number of items in a set that are strictly smaller than our item.
-
-
-void solve(){
-    ll n,k;
-    cin>>n>>k;
-    ordered_set<int>T;
-    for(int i=1;i<=n;i++){
-        T.insert(i);
-    }
-    int indx=k;
-	while(T.size()>0){
-		indx%=T.size();
-		int x=*T.find_by_order(indx);
-		T.erase(x);
-		cout<<x<<" ";
-		indx+=k;
-    }
-   
-}
-int main() {
-    int T=1;
-    // cin >> T;
-    
-    while (T--) {
-        solve();
-    }
-    
-    return 0;
-}
-        `,
-        notes: ''
-      }
+        difficulty: 'Hard',
+        cppCode: josephusProblemII,
+        notes: 'Use a policy-based ordered set (pb_ds tree) that supports O(log n) find-by-order and order-of-key. At each step, compute the index modulo the current size, retrieve and erase that element.',
+      },
     ],
   },
   {
@@ -200,36 +175,58 @@ int main() {
         id: 'dice-combinations',
         title: 'Dice Combinations',
         csesLink: 'https://cses.fi/problemset/task/1633',
+        difficulty: 'Easy',
+        cppCode: diceCombinations,
+        notes: 'dp[i] = number of ordered ways to reach sum i with a 6-sided die. For each i, add dp[i-j] for j = 1..6. Base case dp[0] = 1.',
+      },
+      {
+        id: 'minimizing-coins',
+        title: 'Minimizing Coins',
+        csesLink: 'https://cses.fi/problemset/task/1634',
+        difficulty: 'Easy',
+        cppCode: minimizingCoins,
+        notes: 'Classic coin change (minimum coins). dp[i] = min coins for sum i. For each sum, try every denomination. dp[0] = 0, rest start at ∞. Output -1 if unreachable.',
+      },
+      {
+        id: 'coin-combinations-i',
+        title: 'Coin Combinations I',
+        csesLink: 'https://cses.fi/problemset/task/1635',
+        difficulty: 'Easy',
+        cppCode: coinCombinationsI,
+        notes: 'Count ordered sequences that sum to x (order matters). Inner loop iterates over all coins for each sum, so {1,2} and {2,1} are counted as separate ways.',
+      },
+      {
+        id: 'coin-combinations-ii',
+        title: 'Coin Combinations II',
+        csesLink: 'https://cses.fi/problemset/task/1636',
         difficulty: 'Medium',
-        cppCode: `
-#include <iostream>
-#include <vector>
-
-const int MOD = 1e9 + 7;
-
-int main() {
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(NULL);
-    int n;
-    std::cin >> n;
-
-    std::vector<long long> dp(n + 1, 0);
-    dp[0] = 1; // Base case: one way to make sum 0 (by not rolling)
-
-    for (int i = 1; i <= n; ++i) {
-        for (int j = 1; j <= 6; ++j) {
-            if (i - j >= 0) {
-                dp[i] = (dp[i] + dp[i - j]) % MOD;
-            }
-        }
-    }
-    std::cout << dp[n] << std::endl;
-    return 0;
-}
-        `,
-        notes: 'Classic DP problem. dp[i] is the number of ways to get sum i. Iterate through possible dice rolls (1-6).'
+        cppCode: coinCombinationsII,
+        notes: 'Count unordered multisets that sum to x (order does NOT matter). Outer loop iterates over coins, inner over sums — this is the key structural difference from Coin Combinations I.',
+      },
+      {
+        id: 'removing-digits',
+        title: 'Removing Digits',
+        csesLink: 'https://cses.fi/problemset/task/1637',
+        difficulty: 'Easy',
+        cppCode: removingDigits,
+        notes: 'dp[i] = minimum steps to reduce i to 0. For each value i, extract its digits and update dp[i] = min(dp[i], dp[i-d]+1) for each non-zero digit d.',
+      },
+      {
+        id: 'grid-paths',
+        title: 'Grid Paths',
+        csesLink: 'https://cses.fi/problemset/task/1638',
+        difficulty: 'Easy',
+        cppCode: gridPaths,
+        notes: 'Count paths from (0,0) to (n-1,n-1) moving only right or down. dp[i][j] = dp[i-1][j] + dp[i][j-1]. Blocked cells (*) are set to 0 and stop propagation.',
+      },
+      {
+        id: 'longest-increasing-subsequence',
+        title: 'Longest Increasing Subsequence',
+        csesLink: 'https://cses.fi/problemset/task/1145',
+        difficulty: 'Medium',
+        cppCode: longestIncreasingSubseq,
+        notes: "O(n log n) patience sorting. Maintain `tails` where tails[i] is the smallest tail of any IS of length i+1. For each element, binary search (lower_bound) to find where it replaces or extends tails. The size of tails is the LIS length.",
       },
     ],
   },
 ];
-    

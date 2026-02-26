@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+/* ── Fonts ──────────────────────────────────────────────── */
+* { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+/* ── Thin scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: #3f3f46; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #52525b; }
+html { scrollbar-width: thin; scrollbar-color: #3f3f46 transparent; }
+
+/* ── Fade-in animation ──────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeUp 0.2s ease-out both; }
+
+/* ── Highlight.js – make background transparent ─────────── */
+/* The code wrapper div supplies the background color      */
+.hljs          { background: transparent !important; }
+pre code.hljs  { background: transparent !important; }
